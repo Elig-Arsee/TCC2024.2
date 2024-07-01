@@ -1,0 +1,53 @@
+---
+title: "TCC Data Science e Analytics"
+subtitle: "O Alheamento Eleitoral no Segundo Turno da Eleição Presidencial Brasileira de 2018: Uma Análise Empírica"
+author: "Elig C. Arse da Silva"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+A democracia representativa, em sua essência, se fundamenta na participação popular. Através do voto em eleições livres e justas, os cidadãos delegam a representantes a responsabilidade de tomar decisões em seu nome, conferindo legitimidade ao sistema político.
+
+Para muitos, o voto é a única forma de participação política. No Brasil, o voto assume um papel ainda mais significativo, pois é ao mesmo tempo um direito e um dever. No entanto, nem todos os cidadãos o exercem. Alguns optam por não comparecer às urnas, enquanto outros, mesmo presentes, optam pelo voto branco ou nulo. Essa abstenção, somada aos votos brancos e nulos, configura o que se denomina como alienação eleitoral, ou alheamento eleitoral.
+
+O alheamento eleitoral, fenômeno que se apresenta em diversas democracias representativas, se situa no debate sobre o futuro da democracia e da degradação do sistema democrático. Diversas explicações são propostas para o fenômeno, e as opiniões sobre seus impactos divergem. Para alguns especialistas, como Almond e Verba (1963) e Lipset (1967) a abstenção pode ser tolerável e até desejável para a estabilidade da democracia, enquanto outros, como Costa (2006) a veem como um sintoma preocupante de fragilização do regime uma vez que menos participação eleitoral pode ocasionar mais desigualdade política quando os eleitores que votam não representam o todo do eleitorado. Nesse sentido, o aumento do alheamento eleitoral faz com que pessoas que já são excluídas socialmente, também corram o risco de serem excluídas politicamente, uma vez que os eleitores que participam das eleições não representam seus interesses políticos. Borba, Ribeiro, Gimenes e Casalechi (2018) também afirmam que, à medida que as crises políticas ficam mais intensas, o alheamento eleitoral tende a aumentar.
+
+Segundo o TSE, em 2002 os votos brancos e nulos no segundo turno somaram 10,66% do total de votos. Em 2006 somaram 8,41% do total de votos. No ano 2010, os votos brancos e nulos representam 8,64% do total de votos. Já em 2014, votos brancos e nulos somaram 10% do total de votos no segundo turno. Finalmente, no segundo turno de 2018 a soma dos votos brancos atingiu 10% do total de votos, maior índice desde 1989, período de redemocratização. Apesar dos percentuais parecerem baixos, eles se referem à milhões de votos.
+
+A eleição de 2018 foi fruto de um longo processo de desgaste do sistema político tradicional brasileiro. As sucessivas crises e escândalos de corrupção, como o Mensalão a partir de 2005 e a Lava Jato a partir de 2014, abalaram a confiança da população nas instituições e nos partidos políticos. Além disso, neste ano, um novo elemento, ainda pouco explorado dentro das análises políticas, passa a integrar os materiais de campanha sem qualquer regulamentação ou fiscalização. As redes sociais como Facebook e Whatsapp proporcionaram uma massificação da difusão de informações, sejam elas verdadeiras ou não, em uma escala nunca antes imaginada.
+
+Dada a intensificação da crise política no país nas últimas duas décadas, a conjuntura crítica e os índices de alheamento eleitoral da eleição de 2018, esta pesquisa se faz relevante a fim de identificar se a representação partidária, a avaliação de políticas públicas, a percepção dos eleitores sobre a Lava Jato e os meios de comunicação utilizados para se informar sobre a política são elementos relevantes para explicar o fenômeno do alheamento eleitoral com relação a eleição de 2018.
+
+Portanto, esta pesquisa tem como objetivo principal compreender o fenômeno do alheamento eleitoral no segundo turno da eleição presidencial de 2018. Especificamente, buscamos identificar se a representação partidária, a avaliação de políticas públicas, a percepção dos eleitores sobre a Lava Jato e os meios de comunicação utilizados para se informar sobre a política são variáveis que podem ajudar a explicar a decisão dos eleitores que optaram por não escolher um dos dois candidatos disponíveis no segundo turno. A pesquisa se propõe a explorar dados do Estudo Eleitoral Brasileiro (ESEB) 2018, um survey pós-eleitoral que fornece informações sobre o comportamento dos eleitores. A partir da análise desses dados, buscamos responder à seguinte pergunta de pesquisa: Como as as variáveis de representação partidária, avaliação de políticas públicas, percepção sobre a Lava Jato e os meios de comunicação utilizados para se informar sobre a política influenciaram a decisão dos eleitores de votar em branco ou nulo no segundo turno da eleição presidencial de 2018?
+
+## Material e Métodos 
+Para a análise será utilizado um banco de dados gerado a partir do banco de dados ESEB 2018, disponibilizado em formato .sav no survey nacional ESEB a partir da pesquisa de número 04622 realizada em novembro pelo CESOP-IBOPE e disponibilizada através do link do [Banco de dados ESEB](https://www.cesop.unicamp.br/por/banco_de_dados/v/4538) em formato .sav. A pesquisa eleitoral conduzida pelo ESEB-IBOPE em 2018 foi composta por 2.506 entrevistas com questionário estruturado contendo 290 perguntas. As entrevistas foram realizadas face a face em domicílios em todo o território nacional. A amostra representativa da população eleitoral abrange as cinco regiões do Brasil: Norte, Centro-Oeste, Nordeste, Sudeste e Sul.
+
+O processo de seleção da amostra do ESEB 2018 ocorreu em três etapas. Na primeira etapa, os municípios foram selecionados de forma probabilística utilizando o método de Probabilidade Proporcional ao Tamanho (PPT), levando em consideração o número de eleitores registrados com 16 anos ou mais. A amostra foi estratificada por estado, no caso de estados com regiões metropolitanas, o universo foi estratificado em regiões metropolitanas e interior e foram selecionados 172 municípios para participar da pesquisa. No segundo estágio, foram escolhidos os setores censitários, também utilizando o método PPT. Os critérios de seleção dos setores censitários se deram em dois estágios, primeiramente foi priorizada a escolha de setores localizados em áreas metropolitanas, sem descartar os setores situados no interior do país. Posteriormente, foram selecionados setores em cidades onde estava planejada a realização de 14 ou mais entrevistas, assegurando assim uma cobertura ampla em áreas com maior densidade populacional. Por fim, no terceiro estágio da seleção da amostra, os entrevistados foram selecionados de acordo com quotas de sexo, idade, grau de escolaridade, ramo de atividade e número de banheiros nos domicílios, baseadas nos dados do Censo 2010 do IBGE, do PNAD de 2016 e do TSE de 2018. A amostra final contemplou 172 municípios, sem a necessidade de ponderação de pesos, uma vez que foi projetada para ser proporcional tanto geográfica quanto demograficamente. A margem de erro desta abordagem é de 2,2% com um intervalo de confiança de 95%.
+
+O banco secundário, gerado a partir da conversão do original para o formato .csv, conta com 57 variáveis e amostra de 1924 pessoas que votaram no segundo turno das eleições de 2018. A amostra foi selecionada com base na pergunta Q12P2.A do questionário, em que os entrevistados que responderam a questão “O(A) sr(a) votou no segundo turno desta eleição?” com a opção “sim, votou” foram selecionados. 
+
+### Pacotes
+```{r carregamento de pacotes, warning = FALSE, message = FALSE}
+if(!require(pacman)) install.packages("pacman")
+library(pacman)
+library(rstatix)
+pacman::p_load(dplyr, car, psych, nnet, AER, lmtest, gtsummary, reshape2,
+               ggplot2, DescTools, ggrastr, sjPlot)
+```
+
+### Paleta de cores
+```{r definindo paleta de cores}
+paleta <- c("#00798c", "#d1495b", "#edae49",
+            "#66a182", "#2e4057", "#996633",
+            "#6CB2EB", "#a8dda8", "#95a5a6")
+```
+
+### Banco de dados
+```{r carregamento do banco de dados, warning = FALSE, message = FALSE}
+base2018 <- read.csv2("2018_turno2_decod.csv", sep = ",", fileEncoding = "UTF-8")
+```
+```{r visualização do banco de dados, warning = FALSE, message = FALSE}
+library(rmarkdown)
+paged_table(base2018)
+```

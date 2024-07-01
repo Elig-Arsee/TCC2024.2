@@ -1,0 +1,415 @@
+
+##ANÁLISE DE CORRESPONDÊNCIA MÚLTIPLA (MCA) PARA VARIÁVEIS SOCIODEMOGRÁFICAS##
+install.packages("FactoMineR")
+install.packages("factoextra")
+library(FactoMineR)
+library(factoextra)
+
+# excluindo coluna 58
+base2018 <- base2018[, -58]
+
+mca_socio <- MCA(base2018[, c("localidade",
+                              "regiao",
+                              "sexo",
+                              "faixa_etaria",
+                              "escolaridade",
+                              "faixa_renda",
+                              "cor_raca",
+                              "situacao_profissional",
+                              "voto_presidente")], graph = FALSE)
+
+#Percentual de explicação das variancias de cada dimensão
+G60 <- fviz_screeplot(mca_socio, addlabels = TRUE,
+               ggtheme = theme_minimal(),
+               ylim = c(0,40), barcolor = "#00798c", barfill = "#00798c" )
+
+ggsave("G60.png", width = 10, height = 10, dpi = 400)
+
+G60
+
+#Variáveis
+G61 <- fviz_mca_var(mca_socio, choice = "mca.cor", repel = TRUE, col.var = "#00798c",
+             ggtheme = theme_minimal()) + labs(title = "MCA - Variáveis")
+
+ggsave("G61.png", width = 10, height = 10, dpi = 400)
+
+G61
+
+#Categorias
+G62 <- fviz_mca_var(mca_socio, col.var = "#00798c", shape.var = 1, repel = TRUE)
+
+ggsave("G62.png", width = 10, height = 10, dpi = 400)
+
+G62
+
+#Cos2 (cosseno ao quadrado: representa a qualidade da representação das variáveis
+#no mapa de fatores. Mede o grau de associação entre as categorias das variáveis
+#e um determinado eixo)
+G63 <- fviz_cos2(mca_socio, choice = "var", axes = 1:2, color = "#00798c",fill = "#00798c") +
+  labs(x = "", y = "", title = "")
+
+ggsave("G63.png", width = 10, height = 10, dpi = 400)
+
+G63
+
+#Contribuição (os valores da contribuição para a definição das dimensões)
+G64 <- fviz_contrib(mca_socio, choice = "var", axes = 1:2, top = 15,
+             ggtheme = theme_minimal(base_size = 18)) + labs(y = "Contribuições (%)")
+
+ggsave("G64.png", width = 10, height = 10, dpi = 400)
+
+G64
+
+# Plot conjunto (gráfico de correspondências: pontos e elipses)
+G65 <- fviz_mca_biplot(mca_socio,
+                       geom.ind = "point",
+                       habillage = "voto_presidente",
+                       addEllipses = TRUE,
+                       ellipse.level = 0.95,
+                       col.var = "Black",
+                       palette = paleta,
+                       title = "Análise de Correspondência Múltipla (MCA)",
+                       legend.title = "Escolha do Eleitor",
+                       mean.point = FALSE,
+                       repel = TRUE)
+
+ggsave("G65.png", width = 10, height = 10, dpi = 400)
+
+G65
+
+# Plot dos indivíduos
+#G58 <- fviz_mca_ind(mca_socio, label = "none", habillage = "voto_presidente",
+#                    addEllipses = TRUE, ellipse.level = 0.95, palette = paleta)
+#
+#ggsave("G58.png", width = 10, height = 10, dpi = 400)
+#
+#G58
+
+# Plot das variáveis
+#G59 <- fviz_mca_var(mca_socio, repel = TRUE, col.var = "#00798c")
+#
+#ggsave("G59.png", width = 20, height = 20, dpi = 400)
+#
+#G59
+#
+
+#Identificando variáveis mais correlacionadas
+#res.desc <- ?dimdesc(mca_socio, axes = c(1,2))
+# Descrição da dim 1
+#res.desc[[1]]
+# Descrição da dim 2
+#res.desc[[2]]
+
+
+#ANÁLISE DE CORRESPONDÊNCIA MÚLTIPLA (MCA) PARA VARIÁVEIS CATEGÓRICAS#
+colnames(base2018)
+mca_base <- MCA(base2018, quanti.sup = c(19:43), graph = TRUE)
+
+#Percentual de explicação das variancias de cada dimensão
+explica_variancias <- mca_base$eig
+print(explica_variancias)
+
+library(openxlsx)
+explica_variancias_df <- as.data.frame(explica_variancias)
+excel_file <- "explica_variancias.xlsx"
+write.xlsx(explica_variancias_df, file = excel_file, rowNames = TRUE)
+
+
+MCA_BASE_SCREE_PLOT <- fviz_screeplot(mca_base, addlabels = TRUE,
+                ggtheme = theme_minimal(),
+                ylim = c(0,10), barcolor = "#00798c", barfill = "#00798c" )
+
+ggsave("MCA_BASE_SCREE_PLOT.png", width = 6, height = 4, dpi = 400)
+
+MCA_BASE_SCREE_PLOT
+
+#Variáveis
+contrib <- mca_base$var$contrib
+print(contrib)
+
+library(openxlsx)
+contrib_df <- as.data.frame(contrib)
+excel_file <- "contribuicao_variaveis.xlsx"
+write.xlsx(contrib_df, file = excel_file, rowNames = TRUE)
+
+
+MCA_BASE_VARIAVEIS <- fviz_mca_var(mca_base, choice = "mca.cor", repel = TRUE,col.var = "#00798c",
+             ggtheme = theme_minimal()) + labs(title = "MCA - Variáveis")
+
+ggsave("MCA_BASE_VARIAVEIS.png", width = 10, height = 6, dpi = 400)
+
+MCA_BASE_VARIAVEIS
+
+#Categorias
+# Coordenadas das variáveis no espaço fatoral
+coordinates <- mca_base$var$coord
+print(coordinates)
+
+library(openxlsx)
+coordinates_df <- as.data.frame(coordinates)
+excel_file <- "coordinadas_variaveis.xlsx"
+write.xlsx(coordinates_df, file = excel_file, rowNames = TRUE)
+
+
+MCA_BASE_CATEGORIAS <- fviz_mca_var(mca_base, col.var = "#00798c",
+                                     shape.var = 1, repel = TRUE,
+                                     axes = c(1,2))
+
+ggsave("MCA_BASE_CATEGORIAS.png", width = 10, height = 10, dpi = 400)
+
+MCA_BASE_CATEGORIAS
+
+#Cos2 (cosseno ao quadrado: representa a qualidade da representação das variáveis
+#no mapa de fatores. Mede o grau de associação entre as categorias das variáveis
+#e um determinado eixo)
+cos2_var <- mca_base$var$cos2
+print(cos2_var)
+
+cos2_var_df <- as.data.frame(cos2_var)
+excel_file <- "cos2_categorias.xlsx"
+write.xlsx(cos2_var_df, file = excel_file, rowNames = TRUE)
+
+
+MCA_BASE_COS2 <- fviz_cos2(mca_base, choice = "var", axes = 1:2, color = "#00798c",fill = "#00798c") +
+  labs(x = "", y = "", title = "")
+
+ggsave("MCA_BASE_COS2.png", width = 10, height = 10, dpi = 400)
+
+MCA_BASE_COS2
+
+#Contribuição (os valores da contribuição para a definição das dimensões)
+# Contribuição das variáveis para as dimensões
+contrib_var <- get_mca_var(mca_base)
+contrib_dim1 <- contrib_var$contrib[,1]  # Contribuição na Dimensão 1
+contrib_dim2 <- contrib_var$contrib[,2]  # Contribuição na Dimensão 2
+
+print(contrib_dim1)
+print(contrib_dim2)
+
+contrib_dim1_df <- as.data.frame(contrib_dim1)
+excel_file <- "contrib_dim1.xlsx"
+write.xlsx(contrib_dim1_df, file = excel_file, rowNames = TRUE)
+
+contrib_dim2_df <- as.data.frame(contrib_dim2)
+excel_file <- "contrib_dim2.xlsx"
+write.xlsx(contrib_dim2_df, file = excel_file, rowNames = TRUE)
+
+MCA_BASE_CONTRIB <- ?fviz_contrib(mca_base, choice = "var", axes = 1:2, top = 15,
+             ggtheme = theme_minimal(base_size = 18)) + labs(y = "Contribuições (%)")
+
+ggsave("MCA_BASE_CONTRIB.png", width = 10, height = 10, dpi = 400)
+
+MCA_BASE_CONTRIB
+
+# Plot conjunto (gráfico de correspondências: pontos e elipses)
+# Coordenadas dos indivíduos no espaço fatoral
+coordinates_ind <- mca_base$ind$coord
+print(coordinates_ind)
+
+coordinates_ind_df <- as.data.frame(coordinates_ind)
+excel_file <- "coordinates_ind.xlsx"
+write.xlsx(coordinates_ind_df, file = excel_file, rowNames = TRUE)
+
+
+MCA_BASE_CONJUNTO <- fviz_mca_biplot(mca_base,
+                       geom.ind = "point",
+                       habillage = "voto_presidente",
+                       addEllipses = TRUE,
+                       ellipse.level = 0.95,
+                       col.var = "Black",
+                       palette = paleta,
+                       title = "Análise de Correspondência Múltipla (MCA)",
+                       legend.title = "Escolha do Eleitor",
+                       mean.point = FALSE,
+                       repel = TRUE)
+
+ggsave("MCA_BASE_CONJUNTO.png", width = 10, height = 10, dpi = 400)
+
+MCA_BASE_CONJUNTO
+
+
+
+#IDENTIFICANDO VARIÁVEIS COM POUCA CONTRIBUIÇÃO NAS DIM 1 E 2
+# Visualize a contribuição das variáveis na Dimensão 1
+fviz_contrib(mca_base, choice = "var", axes = 1, top = 10)
+# Visualize a contribuição das variáveis na Dimensão 2
+fviz_contrib(mca_base, choice = "var", axes = 2, top = 10)
+
+
+# Definir o limite para exclusão
+limite_baixo <- 0.1
+
+# Identificar variáveis a serem excluídas
+variaveis_excluir <- rownames(contrib)[apply(contrib, 1, function(x) all(x < limite_baixo))]
+
+print(variaveis_excluir)
+
+# Excluir variáveis do dataframe original
+mca_base_filtrado <- mca_base
+mca_base_filtrado$var$coord <- mca_base$var$coord[!rownames(mca_base$var$coord) %in% variaveis_excluir, ]
+mca_base_filtrado$var$contrib <- mca_base$var$contrib[!rownames(mca_base$var$contrib) %in% variaveis_excluir, ]
+str(mca_base_filtrado)
+#REFAZENDO A ACM COM A BASE QUE EXCLUIU AS VARIÁVEIS
+
+#Percentual de explicação das variancias de cada dimensão
+G66 <- fviz_screeplot(mca_base_filtrado, addlabels = TRUE,
+                ggtheme = theme_minimal(),
+                ylim = c(0,40), barcolor = "#00798c", barfill = "#00798c")
+
+ggsave("G66.png", width = 6, height = 4, dpi = 400)
+
+G66
+
+contrib <- mca_base$var$contrib
+print(contrib)
+
+#Variáveis
+G67 <- fviz_mca_var(mca_base_filtrado, choice = "mca.cor", repel = TRUE, col.var = "#00798c",
+             ggtheme = theme_minimal()) + labs(title = "MCA - Variáveis")
+
+ggsave("G67.png", width = 10, height = 6, dpi = 400)
+
+G67
+
+#coordenadas
+#loadings <- fit$loadings
+
+#Categorias
+G68 <- fviz_mca_var(mca_base_filtrado, col.var = "#00798c", shape.var = 1)
+sapply(mca_base_filtrado, nrow)
+sapply(mca_base_filtrado, class)
+
+nrow(mca_base_filtrado)
+str(mca_base_filtrado)
+
+
+ggsave("G68.png", width = 10, height = 10, dpi = 400)
+
+G68
+
+#Cos2 (cosseno ao quadrado: representa a qualidade da representação das variáveis
+#no mapa de fatores. Mede o grau de associação entre as categorias das variáveis
+#e um determinado eixo)
+G69 <- fviz_cos2(mca_base, choice = "var", axes = 1:2, color = "#00798c",fill = "#00798c") +
+  labs(x = "", y = "", title = "")
+
+ggsave("G69.png", width = 10, height = 10, dpi = 400)
+
+G69
+
+#Contribuição (os valores da contribuição para a definição das dimensões)
+G70 <- fviz_contrib(mca_base, choice = "var", axes = 1:2, top = 15,
+             ggtheme = theme_minimal(base_size = 18)) + labs(y = "Contribuições (%)")
+
+ggsave("G70.png", width = 10, height = 10, dpi = 400)
+
+G70
+# Plot conjunto (gráfico de correspondências: pontos e elipses)
+G71 <- fviz_mca_biplot(mca_base,
+                       geom.ind = "point",
+                       habillage = "voto_presidente",
+                       addEllipses = TRUE,
+                       ellipse.level = 0.95,
+                       col.var = "Black",
+                       palette = paleta,
+                       title = "Análise de Correspondência Múltipla (MCA)",
+                       legend.title = "Escolha do Eleitor",
+                       mean.point = FALSE,
+                       repel = TRUE)
+
+ggsave("G71.png", width = 10, height = 10, dpi = 400)
+
+G71
+
+# ANÁLISE DE CONTRIBUIÇÃO TOTAL DAS VARIÁVEIS EM TODAS AS DIMENSÕES
+
+# Calcular a soma das contribuições para cada variável em todas as dimensões
+contrib_total <- rowSums(contrib)
+
+# Adicionar a contribuição total ao DataFrame
+contrib_df <- as.data.frame(contrib)
+contrib_df$Total_Contribution <- contrib_total
+
+# Ordenar as variáveis pela contribuição total
+contrib_sorted <- contrib_df[order(contrib_df$Total_Contribution, decreasing = TRUE), ]
+
+# Filtrar variáveis válidas (não nulas)
+valid_contrib <- contrib_sorted[!is.na(contrib_sorted$Total_Contribution), ]
+
+# Listar as 20 variáveis com menor contribuição total
+lowest_contrib <- tail(valid_contrib, 20)
+print(lowest_contrib)
+
+# Definir o limite para exclusão
+limite_baixo <- 0.1
+
+# Identificar variáveis a serem excluídas
+variaveis_excluir <- rownames(contrib)[apply(contrib, 1, function(x) all(x < limite_baixo))]
+
+print(variaveis_excluir)
+
+# Excluir variáveis do dataframe original
+base2018_filtrado <- base2018[, !colnames(base2018) %in% variaveis_excluir]
+
+# Refazer a MCA com a base filtrada
+mca_base_filtrado <- MCA(base2018_filtrado, quanti.sup = c(19:43), graph = TRUE)
+
+# Percentual de explicação das variâncias de cada dimensão
+G66 <- fviz_screeplot(mca_base_filtrado, addlabels = TRUE,
+                      ggtheme = theme_minimal(),
+                      ylim = c(0,40), barcolor = "#00798c", barfill = "#00798c")
+
+ggsave("G66.png", width = 6, height = 4, dpi = 400)
+
+G66
+
+contrib <- mca_base_filtrado$var$contrib
+print(contrib)
+
+# Variáveis
+G67 <- fviz_mca_var(mca_base_filtrado, choice = "mca.cor", repel = TRUE, col.var = "#00798c",
+                    ggtheme = theme_minimal()) + labs(title = "MCA - Variáveis")
+
+ggsave("G67.png", width = 10, height = 6, dpi = 400)
+
+G67
+
+# Categorias
+G68 <- fviz_mca_var(mca_base_filtrado, col.var = "#00798c", shape.var = 1, repel = TRUE)
+
+ggsave("G68.png", width = 10, height = 10, dpi = 400)
+
+G68
+
+# Cos2
+G69 <- fviz_cos2(mca_base_filtrado, choice = "var", axes = 1:2, color = "#00798c", fill = "#00798c") +
+  labs(x = "", y = "", title = "")
+
+ggsave("G69.png", width = 10, height = 10, dpi = 400)
+
+G69
+
+# Contribuição
+G70 <- fviz_contrib(mca_base_filtrado, choice = "var", axes = 1:2, top = 15,
+                    ggtheme = theme_minimal(base_size = 18)) + labs(y = "Contribuições (%)")
+
+ggsave("G70.png", width = 10, height = 10, dpi = 400)
+
+G70
+
+# Plot conjunto
+G71 <- fviz_mca_biplot(mca_base_filtrado,
+                       geom.ind = "point",
+                       habillage = "voto_presidente",
+                       addEllipses = TRUE,
+                       ellipse.level = 0.95,
+                       col.var = "Black",
+                       palette = paleta,
+                       title = "Análise de Correspondência Múltipla (MCA)",
+                       legend.title = "Escolha do Eleitor",
+                       mean.point = FALSE,
+                       repel = TRUE)
+
+ggsave("G71.png", width = 10, height = 10, dpi = 400)
+
+G71

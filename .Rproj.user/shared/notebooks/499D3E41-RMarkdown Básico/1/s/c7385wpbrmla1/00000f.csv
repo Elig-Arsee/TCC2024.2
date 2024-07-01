@@ -1,0 +1,4 @@
+"0","dados <- read.csv2(""Banco de Dados 6.csv"")"
+"2","Warning: não foi possível abrir o arquivo 'Banco de Dados 6.csv': No such file or directory"
+"2","Error in file(file, ""rt"") : não é possível abrir a conexão
+"
